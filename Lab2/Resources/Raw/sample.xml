@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<contacts>
+    <contact id="1" collaboration="lectures" faculty="ФІОТ" department="САПР">
+        <name>Іваненко Іван Іванович</name>
+        <faculty>Факультет інформатики та обчислювальної техніки</faculty>
+        <department>Системи автоматизованого проєктування</department>
+        <specialty>Комп'ютерні науки</specialty>
+        <collaboration>Читання лекцій</collaboration>
+        <timeframe>2023-09 – 2023-12</timeframe>
+    </contact>
+    <contact id="2" collaboration="seminar">
+        <name>Петров Петро Петрович</name>
+        <faculty>Фізико-математичний</faculty>
+        <specialty>Інформаційні системи</specialty>
+        <collaboration>Проведення семінару</collaboration>
+        <timeframe>2024-03</timeframe>
+    </contact>
+    <contact id="3" collaboration="research" faculty="ФПМ" department="ІТ" specialty="ШІ">
+        <name>Сміт Джон</name>
+        <faculty>Faculty of Applied Mathematics</faculty>
+        <department>IT Department</department>
+        <specialty>Artificial Intelligence</specialty>
+        <collaboration>Перебування у науковому відрядженні</collaboration>
+        <timeframe>2022-05 – 2022-07</timeframe>
+    </contact>
+    <contact id="4" department="Міжнар. співпраця">
+        <name>Марія Гарсія</name>
+        <department>Міжнародна співпраця</department>
+        <specialty>Менеджмент</specialty>
+        <collaboration>Передача наукової інформації за кордон</collaboration>
+        <timeframe>2024-11</timeframe>
+    </contact>
+</contacts>

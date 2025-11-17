@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lab2.Views.MainPage"
+             Title="Lab 2">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="10">
+            <Label Text="Файл XML:" />
+            <HorizontalStackLayout Spacing="8">
+                <Button Text="Обрати XML" Command="{Binding PickXmlCommand}" />
+                <Label Text="{Binding XmlPath}" LineBreakMode="TailTruncation" VerticalTextAlignment="Center" />
+            </HorizontalStackLayout>
+
+            <Label Text="Файл XSL:" />
+            <HorizontalStackLayout Spacing="8">
+                <Button Text="Обрати XSL" Command="{Binding PickXslCommand}" />
+                <Label Text="{Binding XslPath}" LineBreakMode="TailTruncation" VerticalTextAlignment="Center" />
+            </HorizontalStackLayout>
+
+            <Label Text="Стратегія аналізу:" />
+            <Picker ItemsSource="{Binding Strategies}" SelectedItem="{Binding SelectedStrategy}" />
+
+            <Label Text="Ключове слово:" />
+            <Entry Text="{Binding Keyword}" Placeholder="Введіть ключове слово" />
+
+            <Label Text="Фільтр за атрибутом вузла contact:" />
+            <HorizontalStackLayout Spacing="8">
+                <Picker WidthRequest="180" Title="Атрибут" ItemsSource="{Binding AttributeNames}" SelectedItem="{Binding SelectedAttributeName}" />
+                <Picker WidthRequest="200" Title="Значення" ItemsSource="{Binding AttributeValues}" SelectedItem="{Binding SelectedAttributeValue}" />
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Spacing="8">
+                <Button Text="Аналіз" Command="{Binding AnalyzeCommand}" />
+                <Button Text="Трансформувати у HTML" Command="{Binding TransformCommand}" />
+                <Button Text="Clear" Command="{Binding ClearCommand}" />
+            </HorizontalStackLayout>
+
+            <Label Text="Результати:" FontAttributes="Bold" />
+            <CollectionView ItemsSource="{Binding Results}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeThickness="1" Stroke="#cccccc" Padding="8" Margin="0,4">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding FullName}" FontAttributes="Bold" />
+                                <Label Text="{Binding Faculty}" />
+                                <Label Text="{Binding Department}" />
+                                <Label Text="{Binding Specialty}" />
+                                <Label Text="{Binding CollaborationType}" />
+                                <Label Text="{Binding Timeframe}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

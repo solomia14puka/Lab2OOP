@@ -33,6 +33,7 @@ namespace Lab2.ViewModels
             AnalyzeCommand = new DelegateCommand(async _ => await Analyze(), _ => CanAnalyze);
             TransformCommand = new DelegateCommand(async _ => await Transform(), _ => CanTransform);
             ClearCommand = new DelegateCommand(async _ => { Clear(); await Task.CompletedTask; });
+            ExitCommand = new DelegateCommand(async _ => await Exit());
 
             SelectedStrategy = Strategies.FirstOrDefault();
         }
@@ -51,7 +52,7 @@ namespace Lab2.ViewModels
         public string? SelectedStrategy { get => _selectedStrategy; set { _selectedStrategy = value; OnPropertyChanged(); SelectStrategy(); UpdateCanExecutes(); } }
 
         public ObservableCollection<string> Strategies { get; } =
-            new(new[] { "SAX (XmlReader)", "DOM (XmlDocument)", "LINQ to XML (XDocument)" });
+            new(new[] { "SAX", "DOM", "LINQ to XML" });
 
         public ObservableCollection<string> AttributeNames { get; } = new();
         public ObservableCollection<string> AttributeValues { get; } = new();
@@ -74,6 +75,7 @@ namespace Lab2.ViewModels
         public ICommand AnalyzeCommand { get; }
         public ICommand TransformCommand { get; }
         public ICommand ClearCommand { get; }
+        public ICommand ExitCommand { get; }
 
         //Логіка
         private async Task PickXml()
@@ -192,9 +194,7 @@ namespace Lab2.ViewModels
                 var outPath = _transformer.TransformToHtml(XmlPath, XslPath);
 
                 await Application.Current.MainPage.DisplayAlert(
-                    "Готово",
-                    $"HTML збережено: {outPath}",
-                    "OK");
+                    "Готово",$"HTML збережено: {outPath}","OK");
 
                 await Launcher.Default.OpenAsync(new OpenFileRequest
                 {
@@ -223,6 +223,20 @@ namespace Lab2.ViewModels
             (AnalyzeCommand as DelegateCommand)?.RaiseCanExecuteChanged();
             (TransformCommand as DelegateCommand)?.RaiseCanExecuteChanged();
         }
-    }
+        private async Task Exit()
+        {
+            var page = Application.Current?.Windows.FirstOrDefault()?.Page;
+            bool close = await (page?.DisplayAlert(
+                "Підтвердження",
+                "Чи дійсно ви хочете завершити роботу з програмою?",
+                "Так", "Ні") ?? Task.FromResult(false));
 
+            if (close)
+            {
+#if ANDROID || IOS || MACCATALYST || WINDOWS
+                Application.Current?.Quit();
+#endif
+            }
+        }
+    }
 }

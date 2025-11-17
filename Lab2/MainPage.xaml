@@ -28,11 +28,12 @@
                 <Picker WidthRequest="180" Title="Атрибут" ItemsSource="{Binding AttributeNames}" SelectedItem="{Binding SelectedAttributeName}" />
                 <Picker WidthRequest="200" Title="Значення" ItemsSource="{Binding AttributeValues}" SelectedItem="{Binding SelectedAttributeValue}" />
             </HorizontalStackLayout>
-
+            
             <HorizontalStackLayout Spacing="8">
                 <Button Text="Аналіз" Command="{Binding AnalyzeCommand}" />
                 <Button Text="Трансформувати у HTML" Command="{Binding TransformCommand}" />
                 <Button Text="Clear" Command="{Binding ClearCommand}" />
+                <Button Text="Вихід" Command="{Binding ExitCommand}" />
             </HorizontalStackLayout>
 
             <Label Text="Результати:" FontAttributes="Bold" />

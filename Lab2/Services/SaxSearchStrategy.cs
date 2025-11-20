@@ -13,68 +13,66 @@ namespace Lab2.Services
     {
         public IEnumerable<Contact> Search(string xmlPath, string? keyword, string? attributeName, string? attributeValue)
         {
-            var results = new List<Contact>();
-            using var reader = XmlReader.Create(xmlPath, new XmlReaderSettings { IgnoreComments = true, IgnoreWhitespace = true });
+            using var reader = XmlReader.Create(xmlPath);
+
+            Contact? current = null;
+            string? currentElement = null;
 
             while (reader.Read())
             {
-                if (reader.NodeType == XmlNodeType.Element && reader.Name == "contact")
+                if (reader.NodeType == XmlNodeType.Element)
                 {
-                    using var subtree = reader.ReadSubtree();
-                    var contact = new Contact();
-
-                    if (reader.HasAttributes)
+                    if (reader.Name == "contact")
                     {
-                        for (int i = 0; i < reader.AttributeCount; i++)
+                        current = new Contact();
+
+                        if (reader.HasAttributes)
                         {
-                            reader.MoveToAttribute(i);
-                            contact.Attributes[reader.Name] = reader.Value;
-                        }
-                        reader.MoveToElement();
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(attributeName) && !string.IsNullOrWhiteSpace(attributeValue))
-                    {
-                        if (!contact.Attributes.TryGetValue(attributeName!, out var val) ||
-                            !string.Equals(val, attributeValue, StringComparison.OrdinalIgnoreCase))
-                            continue;
-                    }
-
-                    string allText = string.Empty;
-                    using (subtree)
-                    {
-                        var inner = subtree;
-                        while (inner.Read())
-                        {
-                            if (inner.NodeType == XmlNodeType.Element)
+                            while (reader.MoveToNextAttribute())
                             {
-                                var name = inner.Name;
-                                if (name is "name" or "faculty" or "department" or "specialty" or "collaboration" or "timeframe")
+                                var name = reader.Name;
+                                var value = reader.Value;
+
+                                current.Attributes[name] = value;
+
+                                switch (name)
                                 {
-                                    var value = inner.ReadElementContentAsString();
-                                    switch (name)
-                                    {
-                                        case "name": contact.FullName = value; break;
-                                        case "faculty": contact.Faculty = value; break;
-                                        case "department": contact.Department = value; break;
-                                        case "specialty": contact.Specialty = value; break;
-                                        case "collaboration": contact.CollaborationType = value; break;
-                                        case "timeframe": contact.Timeframe = value; break;
-                                    }
-                                    allText += value + " ";
+                                    case "name": current.FullName = value; break;
+                                    case "faculty": current.Faculty = value; break;
+                                    case "department": current.Department = value; break;
+                                    case "specialty": current.Specialty = value; break;
+                                    case "collaboration": current.CollaborationType = value; break;
+                                    case "timeframe": current.Timeframe = value; break;
                                 }
                             }
+                            reader.MoveToElement();
                         }
                     }
+                    else
+                    {
+                        currentElement = reader.Name;
+                    }
+                }
+                else if (reader.NodeType == XmlNodeType.Text && current != null && currentElement != null)
+                {
+                    var text = reader.Value;
 
-                    if (!string.IsNullOrWhiteSpace(keyword) &&
-                        allText.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) < 0)
-                        continue;
-
-                    results.Add(contact);
+                    switch (currentElement)
+                    {
+                        case "name": current.FullName = text; break;
+                        case "faculty": current.Faculty = text; break;
+                        case "department": current.Department = text; break;
+                        case "specialty": current.Specialty = text; break;
+                        case "collaboration": current.CollaborationType = text; break;
+                        case "timeframe": current.Timeframe = text; break;
+                    }
+                }
+                else if (reader.NodeType == XmlNodeType.EndElement && reader.Name == "contact" && current != null)
+                {
+                    yield return current;
+                    current = null;
                 }
             }
-            return results;
         }
     }
 }

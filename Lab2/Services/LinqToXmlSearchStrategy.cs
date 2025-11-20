@@ -34,11 +34,11 @@ namespace Lab2.Services
                 var c = new Contact
                 {
                     FullName = (string?)e.Element("name"),
-                    Faculty = (string?)e.Element("faculty"),
-                    Department = (string?)e.Element("department"),
-                    Specialty = (string?)e.Element("specialty"),
-                    CollaborationType = (string?)e.Element("collaboration"),
-                    Timeframe = (string?)e.Element("timeframe")
+                    Faculty = (string?)e.Element("faculty") ?? (string?)e.Attribute("faculty"),
+                    Department = (string?)e.Element("department") ?? (string?)e.Attribute("department"),
+                    Specialty = (string?)e.Element("specialty") ?? (string?)e.Attribute("specialty"),
+                    CollaborationType = (string?)e.Element("collaboration") ?? (string?)e.Attribute("collaboration"),
+                    Timeframe = (string?)e.Element("timeframe") ?? (string?)e.Attribute("timeframe")
                 };
                 foreach (var a in e.Attributes())
                     c.Attributes[a.Name.LocalName] = a.Value;

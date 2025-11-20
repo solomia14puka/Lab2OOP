@@ -49,7 +49,17 @@ namespace Lab2.ViewModels
         public string? Keyword { get => _keyword; set { _keyword = value; OnPropertyChanged(); UpdateCanExecutes(); } }
 
         private string? _selectedStrategy;
-        public string? SelectedStrategy { get => _selectedStrategy; set { _selectedStrategy = value; OnPropertyChanged(); SelectStrategy(); UpdateCanExecutes(); } }
+        public string? SelectedStrategy
+        {
+            get => _selectedStrategy;
+            set
+            {
+                _selectedStrategy = value;
+                OnPropertyChanged();
+                SelectStrategy();
+                UpdateCanExecutes();
+            }
+        }
 
         public ObservableCollection<string> Strategies { get; } =
             new(new[] { "SAX", "DOM", "LINQ to XML" });
@@ -162,8 +172,8 @@ namespace Lab2.ViewModels
         {
             switch (SelectedStrategy)
             {
-                case "SAX (XmlReader)": _searchContext.SetStrategy(_sax); break;
-                case "DOM (XmlDocument)": _searchContext.SetStrategy(_dom); break;
+                case "SAX": _searchContext.SetStrategy(_sax); break;
+                case "DOM": _searchContext.SetStrategy(_dom); break;
                 default: _searchContext.SetStrategy(_linq); break;
             }
         }

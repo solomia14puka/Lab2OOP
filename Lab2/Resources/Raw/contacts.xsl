@@ -19,7 +19,6 @@
 				<table>
 					<thead>
 						<tr>
-							<th>ID</th>
 							<th>П.І.П.</th>
 							<th>Факультет</th>
 							<th>Кафедра</th>
@@ -32,9 +31,6 @@
 					<tbody>
 						<xsl:for-each select="contacts/contact">
 							<tr>
-								<td>
-									<xsl:value-of select="@id" />
-								</td>
 								<td>
 									<xsl:value-of select="name" />
 								</td>
